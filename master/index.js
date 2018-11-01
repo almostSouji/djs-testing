@@ -1,13 +1,14 @@
 
 const { readdirSync } = require('fs');
+const { join } = require('path');
 const { Client, Collection } = require('discord.js');
 const client = new Client();
 const { token: TOKEN, prefix: PREFIX, owner: OWNER } = require('./config/config');
 
 client.commands = new Collection();
-const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = readdirSync(join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(join(__dirname, 'commands', file));
 
 	client.commands.set(command.name, command);
 }

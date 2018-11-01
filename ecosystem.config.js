@@ -11,7 +11,7 @@ module.exports = {
 			script: './dev/index.js',
 		},
 		// master
-		 {
+		{
 			name: 'djs-master',
 			script: './master/index.js',
 		}

@@ -1,13 +1,14 @@
 
 const { readdirSync } = require('fs');
+const { join } = require('path');
 const { Client, Collection } = require('discord.js');
 const client = new Client();
 const { token: TOKEN, prefix: PREFIX, owner: OWNER } = require('./config/config');
 
 client.commands = new Collection();
-const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = readdirSync(join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(join(__dirname, 'commands', file));
 
 	client.commands.set(command.name, command);
 }
@@ -23,7 +24,7 @@ client.on('message', msg => {
 	const args = msg.content.slice(PREFIX.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
 	const command = client.commands.get(commandName) ||
-	client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+		client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
 	if (command.ownerOnly && !OWNER.includes(msg.author.id)) return;
