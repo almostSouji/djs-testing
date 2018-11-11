@@ -35,7 +35,7 @@ module.exports = {
 			}
 		} catch (err) {
 			console.error('Eval error:', err);
-			return msg.channel.send(`Error:\`\`\`xl\n${clean(err)}\n\`\`\``);
+			return msg.channel.send(`Error:\`\`\`xl\n${clean(err, msg.client.token)}\n\`\`\``);
 		}
 	}
 };
