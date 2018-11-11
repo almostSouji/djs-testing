@@ -1,9 +1,8 @@
-
+require('dotenv').config();
 const { readdirSync } = require('fs');
 const { join } = require('path');
 const { Client, Collection } = require('discord.js');
 const client = new Client();
-const { token: TOKEN, prefix: PREFIX, owner: OWNER } = require('./config/config');
 
 client.commands = new Collection();
 const commandFiles = readdirSync(join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
@@ -13,21 +12,21 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-
 client.on('ready', () => {
 	console.log(`${client.user.tag} (${client.user.id}) ready.`);
+	client.user.setActivity(`Watching for ${process.env.PREFIX}`);
 });
 
 client.on('message', msg => {
-	if (!msg.content.startsWith(PREFIX) || msg.author.bot) return;
+	if (!msg.content.startsWith(process.env.PREFIX) || msg.author.bot) return;
 
-	const args = msg.content.slice(PREFIX.length).split(/ +/);
+	const args = msg.content.slice(process.env.PREFIX.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
 	const command = client.commands.get(commandName) ||
 		client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
-	if (command.ownerOnly && !OWNER.includes(msg.author.id)) return;
+	if (command.ownerOnly && !process.env.OWNER.split(',').includes(msg.author.id)) return;
 
 	try {
 		command.execute(msg, args);
@@ -37,4 +36,4 @@ client.on('message', msg => {
 	}
 });
 
-client.login(TOKEN);
+client.login(process.env.TOKEN);
