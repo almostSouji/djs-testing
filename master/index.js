@@ -20,7 +20,7 @@ client.on('ready', () => {
 client.on('message', msg => {
 	if (!msg.content.startsWith(process.env.PREFIX) || msg.author.bot) return;
 
-	const args = msg.content.slice(process.env.PREFIX.length).split(/ +/);
+	const args = msg.content.slice(process.env.PREFIX.length).trim().split(/\s+/);
 	const commandName = args.shift().toLowerCase();
 	const command = client.commands.get(commandName) ||
 		client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
