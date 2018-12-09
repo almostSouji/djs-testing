@@ -9,9 +9,7 @@ module.exports = {
 	description: 'versioncmd',
 	aliases: ['v', 'ver', 'commit'],
 	ownerOnly: true,
-	buildInfoEmbed(discordJS, msg) {
-		const hashReg = /(?:tar.gz\/|#)(\w+)/;
-		const djsHash = discordJS.match(hashReg)[1];
+	buildInfoEmbed(_, msg) {
 		const embed = new djs.RichEmbed()
 			.setThumbnail(msg.client.user.displayAvatarURL)
 			.addField(`Library: Discord.js: ${djs.version}`, stripIndents`Commithash: \`stable\`
@@ -31,7 +29,7 @@ module.exports = {
 			const discordJS = dependencies['discord.js@^11.4.2'];
 			return msg.channel.send(this.buildInfoEmbed(discordJS.resolved, msg));
 		} catch (_) {
-			const lock = require('../../../package-lock.json');
+			const lock = require('../package-lock.json');
 			const discordJS = lock.dependencies['discord.js'].version;
 			return msg.channel.send(this.buildInfoEmbed(discordJS, msg));
 		}
