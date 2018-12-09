@@ -1,6 +1,6 @@
 const { stripIndents } = require('common-tags');
 const lockfile = require('@yarnpkg/lockfile');
-const { MessageEmbed } = require('discord.js');
+const djs = require('discord.js');
 const { readFileSync } = require('fs');
 
 
@@ -9,20 +9,31 @@ module.exports = {
 	description: 'versioncmd',
 	aliases: ['v', 'ver', 'commit'],
 	ownerOnly: true,
-	execute(msg) {
-		const file = readFileSync('./yarn.lock', 'utf8');
-		const dependencies = lockfile.parse(file).object;
-		const hashReg = /ta?r?\.?gz(\/|#)(\w+)/;
-		const djs = dependencies['discord.js@discordjs/discord.js#11.4-dev'];
-		const djsHash = djs.resolved.match(hashReg)[2];
-
-		const embed = new MessageEmbed()
+	buildInfoEmbed(discordJS, msg) {
+		const hashReg = /(?:tar.gz\/|#)(\w+)/;
+		const djsHash = discordJS.match(hashReg)[1];
+		const embed = new djs.RichEmbed()
 			.setThumbnail(msg.client.user.displayAvatarURL)
 			.addField(`Library: Discord.js: ${djs.version}`, stripIndents`Commithash: \`${djsHash}\`
 					[view on GitHub](https://github.com/discordjs/discord.js/commit/${djsHash})`)
-			.setFooter(`Node.js ${process.version}`, 'https://cdn.discordapp.com/emojis/475614309238702101.png')
-			.setColor(3553599);
+			.setFooter(`Node.js ${process.version}`, 'https://cdn.discordapp.com/emojis/475614309238702101.png');
 
-		msg.channel.send(embed);
+		if (!embed.color && msg.guild && msg.guild.me.displayColor) {
+			embed.setColor(msg.guild.me.displayColor);
+		}
+		return embed;
+	},
+
+	execute(msg) {
+		try {
+			const file = readFileSync('./yarn.lock', 'utf8');
+			const dependencies = lockfile.parse(file).object;
+			const discordJS = dependencies['discord.js@discordjs/discord.js#11.4-dev'];
+			return msg.channel.send(this.buildInfoEmbed(discordJS.resolved, msg));
+		} catch (_) {
+			const lock = require('../../../package-lock.json');
+			const discordJS = lock.dependencies['discord.js'].version;
+			return msg.channel.send(this.buildInfoEmbed(discordJS, msg));
+		}
 	}
 };
