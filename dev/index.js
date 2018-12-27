@@ -14,7 +14,6 @@ for (const file of commandFiles) {
 
 client.on('ready', () => {
 	console.log(`${client.user.tag} (${client.user.id}) ready.`);
-	client.user.setActivity(`Watching for ${process.env.PREFIX}`);
 });
 
 client.on('message', msg => {
@@ -33,6 +32,14 @@ client.on('message', msg => {
 		console.error(error);
 		msg.reply('there was an error trying to execute that command!');
 	}
+});
+
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection:', error);
+});
+
+client.on('error', error => {
+	console.error('Websocket Error:', error);
 });
 
 client.login(process.env.TOKEN);
