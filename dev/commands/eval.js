@@ -26,7 +26,7 @@ module.exports = {
 			let response = '';
 
 			response += `\`\`\`js\n${clean(inspect(evaled, { depth: 0 }), msg.client.token)}\n\`\`\``;
-			response += `• d.js 11.4-dev`;
+			response += `• d.js 11.5-dev`;
 			response += ` • Type: \`${typeof evaled}\``;
 			response += ` • time taken: \`${(((hrStop[0] * 1e9) + hrStop[1])) / 1e6}ms\``;
 
