@@ -12,5 +12,11 @@
 	},
 	"eslintConfig": {
 		"extends": "aqua/node"
+	},
+	"scripts": {
+		"run-stable": "cd src/stable & node index.js",
+		"run-dev": "cd src/dev & node index.js",
+		"run-master": "cd src/master & node index.js",
+		"run-shard": "cd src/shard & node index.js"
 	}
 }

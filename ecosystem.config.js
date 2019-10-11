@@ -3,20 +3,20 @@ module.exports = {
 		// stable
 		{
 			name: 'djs-stable',
-			script: './stable/index.js',
-			cwd: "./stable"
+			script: './src/stable/index.js',
+			cwd: './src/stable'
 		},
 		// dev
 		{
 			name: 'djs-dev',
-			script: './dev/index.js',
-			cwd: "./dev"
+			script: './src/dev/index.js',
+			cwd: './src/dev'
 		},
 		// master
 		{
 			name: 'djs-master',
-			script: './master/index.js',
-			cwd: "./master"
+			script: './src/master/index.js',
+			cwd: './src/master'
 		}
 	]
 };
