@@ -28,7 +28,7 @@ module.exports = {
 		try {
 			const file = readFileSync('./yarn.lock', 'utf8');
 			const dependencies = lockfile.parse(file).object;
-			const discordJS = dependencies['discord.js@discordjs/discord.js#11.4-dev'];
+			const discordJS = dependencies['discord.js@discordjs/discord.js#11.5-dev'];
 			return msg.channel.send(this.buildInfoEmbed(discordJS.resolved, msg));
 		} catch (_) {
 			const lock = require('../package-lock.json');
