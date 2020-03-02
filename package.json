@@ -6,18 +6,10 @@
 	"author": "Souji",
 	"license": "MIT",
 	"private": true,
-	"devDependencies": {
-		"eslint": "^5.8.0",
-		"eslint-config-aqua": "^4.3.4"
-	},
-	"eslintConfig": {
-		"extends": "aqua/node"
-	},
 	"scripts": {
 		"run-stable": "cd stable & node index.js",
 		"run-dev": "cd dev & node index.js",
 		"run-master": "cd master & node index.js",
-		"run-shard": "cd shard & node index.js",
-		"lint": "eslint ."
+		"run-shard": "cd shard & node index.js"
 	}
 }
