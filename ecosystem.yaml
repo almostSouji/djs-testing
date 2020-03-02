@@ -1,0 +1,10 @@
+apps:
+  - name    : 'djs-stable'
+    script  : './stable/index.js'
+    cwd     : './stable'
+  - name    : 'djs-dev'
+    script  : './dev/index.js'
+    cwd     : './dev'
+  - name    : 'djs-master'
+    script  : './master/index.js'
+    cwd     : './master'
