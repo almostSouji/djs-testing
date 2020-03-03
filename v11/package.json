@@ -1,0 +1,26 @@
+{
+  "name": "boilerplate-stable",
+  "version": "1.0.0",
+  "description": "discord.js boilerplate (stable)",
+  "main": "index.js",
+  "author": "Souji",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@yarnpkg/lockfile": "^1.1.0",
+    "common-tags": "^1.8.0",
+    "discord.js": "^11.6.1",
+    "dotenv": "^6.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-aqua": "^4.3.4"
+  },
+  "eslintConfig": {
+    "extends": "aqua/node"
+  }
+}
