@@ -9,7 +9,7 @@
 	"dependencies": {
 		"@yarnpkg/lockfile": "^1.1.0",
 		"common-tags": "^1.8.0",
-		"discord.js": "discordjs/discord.js",
+		"discord.js": "github:discordjs/discord.js",
 		"dotenv": "^6.0.0"
 	},
 	"devDependencies": {
