@@ -27,8 +27,8 @@ services:
     next:
         image: djs-next
         build:
-          context: ./master
+          context: ./next
           dockerfile: Dockerfile
         restart: unless-stopped
         env_file:
-          - ./master/.env
+          - ./next/.env
