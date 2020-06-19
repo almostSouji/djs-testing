@@ -14,7 +14,7 @@
 		"lint:fix": "eslint src --ext ts --fix"
 	},
 	"dependencies": {
-		"discord.js": "github:discordjs/discord.js",
+		"discord.js": "github:discordjs/discord.js#5b9cdc5cd243b1588c285e22b90d92535a30b993",
 		"dotenv": "^6.0.0"
 	},
 	"devDependencies": {
