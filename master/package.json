@@ -6,6 +6,10 @@
 	"author": "Souji",
 	"license": "MIT",
 	"private": true,
+	"scripts": {
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
+	  },
 	"dependencies": {
 		"@yarnpkg/lockfile": "^1.1.0",
 		"common-tags": "^1.8.0",
