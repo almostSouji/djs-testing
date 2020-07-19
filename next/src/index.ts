@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { resolve, join } from 'path';
-import { Client, Message, Collection } from 'discord.js';
+import { Client, Collection } from 'discord.js';
 import { readdirSync } from 'fs';
 import { Command } from './structures/command';
 
@@ -25,7 +25,6 @@ async function main() {
 
 	client.on('message', async message => {
 		if (message.partial) await message.fetch();
-		message = message as Message;
 		if (!message.content.startsWith(process.env.PREFIX!) || message.author.bot) return;
 
 		const args = message.content.slice(process.env.PREFIX!.length).trim().split(/ +/);
