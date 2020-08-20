@@ -16,6 +16,14 @@ services:
         restart: unless-stopped
         env_file:
           - ./v12/.env
+    shard:
+        image: djs-shard
+        build:
+          context: ./shard
+          dockerfile: Dockerfile
+        restart: unless-stopped
+        env_file:
+          - ./shard/.env
     master:
         image: djs-master
         build:
