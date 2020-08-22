@@ -13,7 +13,16 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', () => {
+	const statuses = ['online', 'idle'];
+	const id = client.shard.ids[0];
 	console.log(`${client.user.tag} (${client.user.id}) ready.`);
+	client.user.setPresence({
+		activity: {
+			name: `shard ${id}`,
+			type: 'WATCHING'
+		},
+		status: statuses[id]
+	});
 });
 
 client.on('message', msg => {
