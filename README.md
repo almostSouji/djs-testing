@@ -21,7 +21,9 @@ Included Testing images: STRT (loop) by beeple https://www.beeple-crap.com/vjloo
 
 # Docker
 
-The bot cluster is set up with docker-compose. Run 
+[What is docker?](https://docs.docker.com/get-started/overview/)
+
+The bot cluster is set up with [docker-compose](https://docs.docker.com/compose/). Run 
 
 ```
 docker-compose up
