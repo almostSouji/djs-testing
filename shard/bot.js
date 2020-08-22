@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { readdirSync } = require('fs');
-const { join } = require('path');
-const { Client, Collection } = require('discord.js');
+const { join, sep } = require('path');
+const { Client, Collection, version } = require('discord.js');
 const client = new Client();
 
 client.commands = new Collection();
@@ -13,7 +13,7 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', () => {
-	const statuses = ['online', 'idle'];
+	const statuses = ['online', 'dnd'];
 	const id = client.shard.ids[0];
 	console.log(`${client.user.tag} (${client.user.id}) ready.`);
 	client.user.setPresence({
@@ -23,6 +23,12 @@ client.on('ready', () => {
 		},
 		status: statuses[id]
 	});
+	const parts = __dirname.split(sep);
+	const name = `${parts[parts.length - 1]} (${version})`;
+	if (client.user.username !== name) {
+		console.log(`setting name: ${name}`);
+		client.user.setUsername(name);
+	}
 });
 
 client.on('message', msg => {

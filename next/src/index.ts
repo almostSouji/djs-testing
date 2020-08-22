@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
-import { resolve, join } from 'path';
-import { Client, Collection } from 'discord.js';
+import { resolve, join, sep } from 'path';
+import { Client, Collection, version } from 'discord.js';
 import { readdirSync } from 'fs';
 import { Command } from './structures/command';
 
@@ -21,6 +21,12 @@ async function main() {
 
 	client.on('ready', () => {
 		console.log(`${client.user?.tag} (${client.user?.id}) ready.`);
+		const parts = __dirname.split(sep);
+		const name = `${parts[parts.length - 1]} (${version})`;
+		if (client.user?.username !== name) {
+			console.log(`setting name: ${name}`);
+			client.user?.setUsername(name);
+		}
 	});
 
 	client.on('message', async message => {

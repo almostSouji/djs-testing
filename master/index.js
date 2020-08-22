@@ -1,8 +1,12 @@
 require('dotenv').config();
 const { readdirSync } = require('fs');
-const { join } = require('path');
+const { join, sep } = require('path');
 const { Client, Collection } = require('discord.js');
 const client = new Client();
+const lock = require('./package-lock.json');
+const discordJS = lock.dependencies['discord.js'].version;
+const hashReg = /(?:tar.gz\/|#)(\w+)/;
+const djsHash = discordJS.match(hashReg)[1];
 
 client.commands = new Collection();
 const commandFiles = readdirSync(join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
@@ -14,6 +18,12 @@ for (const file of commandFiles) {
 
 client.on('ready', () => {
 	console.log(`${client.user.tag} (${client.user.id}) ready.`);
+	const parts = __dirname.split(sep);
+	const name = `${parts[parts.length - 1]} (${djsHash.slice(0, 6)})`;
+	if (client.user.username !== name) {
+		console.log(`setting name: ${name}`);
+		client.user.setUsername(name);
+	}
 });
 
 client.on('message', msg => {
