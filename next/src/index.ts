@@ -22,7 +22,7 @@ async function main() {
 	client.on('ready', () => {
 		console.log(`${client.user?.tag} (${client.user?.id}) ready.`);
 		const parts = __dirname.split(sep);
-		const name = `${parts[parts.length - 1]} (${version})`;
+		const name = `${parts[parts.length - 2]} (${version})`;
 		if (client.user?.username !== name) {
 			console.log(`setting name: ${name}`);
 			client.user?.setUsername(name);
