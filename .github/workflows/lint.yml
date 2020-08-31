@@ -4,6 +4,10 @@ jobs:
   eslint:
     name: ESLint
     runs-on: macos-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        path: [v11, v12, master, next, shard]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -13,34 +17,10 @@ jobs:
         with:
           node-version: 12
 
-      - name: Install dependencies - master
-        working-directory: ./master
+      - name: Install dependencies - ${{matrix.path}}
+        working-directory: ./${{matrix.path}}
         run: npm install
 
-      - name: Run ESLint - master
-        working-directory: ./master
-        run: npm run lint
-
-      - name: Install dependencies - next
-        working-directory: ./next
-        run: npm install
-
-      - name: Run ESLint - next
-        working-directory: ./next
-        run: npm run lint
-
-      - name: Install dependencies - v11
-        working-directory: ./v11
-        run: npm install
-
-      - name: Run ESLint - v11
-        working-directory: ./v11
-        run: npm run lint
-
-      - name: Install dependencies - v12
-        working-directory: ./v12
-        run: npm install
-
-      - name: Run ESLint - v12
-        working-directory: ./v12
+      - name: Run ESLint - ${{matrix.path}}
+        working-directory: ./${{matrix.path}}
         run: npm run lint
