@@ -1,6 +1,6 @@
 FROM node:12-alpine
-LABEL name="DJS Test Suite [>>]"
-LABEL version="0.2.0"
+LABEL name="DJS Test Suite [next]"
+LABEL version="0.1.0"
 LABEL maintainer="Souji <timoqueezle@gmail.com>"
 LABEL djs_version="@next"
 ENV TOKEN= \
