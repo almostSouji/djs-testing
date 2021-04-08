@@ -1,6 +1,6 @@
 {
 	"name": "boilerplate-next",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"description": "discord.js boilerplate (next)",
 	"main": "index.js",
 	"author": "Souji",
