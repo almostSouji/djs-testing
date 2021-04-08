@@ -12,16 +12,22 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', () => {
-	console.log(`${client.user.tag} (${client.user.id}) ready.`);
 	const parts = __dirname.split(sep);
 	const name = `${parts[parts.length - 1]} (${version})`;
-	if (client.user.username !== name) {
-		console.log(`setting name: ${name}`);
-		client.user.setUsername(name);
+	if (process.env.LOCKED === 'TRUE') {
+		console.log('\x1B[32mready in locked mode (bot only reacts to owners)...\x1B[0m');
+	} else {
+		console.log('\x1b[31mready in open mode - COMMANDS MAY BE USED BY EVERYONE, UNLESS OWNER ONLY IS SPECIFIED...\x1B[0m');
 	}
+	console.log(`Client tag: \x1B[34m${client.user.tag}\x1B[0m`);
+	console.log(`Client ID: \x1B[34m${client.user.id}\x1B[0m`);
+	console.log(`Library version: \x1B[34m${name}\x1B[0m`);
+	console.log(`Prefix: \x1B[34m${process.env.PREFIX}\x1B[0m`);
 });
 
-client.on('message', msg => {
+client.on('message', async msg => {
+	const owners = !process.env.OWNER.split(',');
+	if (process.env.LOCKED === 'TRUE' && !owners.includes(msg.author.id)) return;
 	if (!msg.content.startsWith(process.env.PREFIX) || msg.author.bot) return;
 
 	const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/);
@@ -30,10 +36,10 @@ client.on('message', msg => {
 		client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
-	if (command.ownerOnly && !process.env.OWNER.split(',').includes(msg.author.id)) return;
+	if (command.ownerOnly && !owners.includes(msg.author.id)) return;
 
 	try {
-		command.execute(msg, args);
+		await command.execute(msg, args);
 	} catch (error) {
 		console.error(error);
 		msg.reply('there was an error trying to execute that command!');
@@ -47,5 +53,8 @@ process.on('unhandledRejection', error => {
 client.on('error', error => {
 	console.error('Websocket Error:', error);
 });
+
+client.on('warn', console.log);
+client.on('debug', console.log);
 
 client.login(process.env.TOKEN);

@@ -1,14 +1,15 @@
 # Getting started
 Suite of testing bots for several discord.js versions and applications. Each sub-project should be run on its own token.
 
-Each bot will set its username based on the running discord.js version to easily discern them. The shard project will set an activity and status to reflect the shard in its presence.
+The shard project will set an activity and status to reflect the shard in its presence.
 
-Each application needs a file `.env` in its root directory containing
+Each application needs a file called `.env` in its root directory containing:
 
 ```
 TOKEN=71pjmILeAvX0CmSRnKBDnOCh50llqGe4Q0tmwBiDwcoi2iO9b30i70iug3f
 OWNER=83886770768314368
 PREFIX=!
+LOCKED=TRUE // remove line if open command usage is desired
 ```
 
 If multiple owners are desired they can be separated with a comma:

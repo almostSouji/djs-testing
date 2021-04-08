@@ -19,5 +19,5 @@ export abstract class Command {
 		this.ownerOnly = data?.ownerOnly ?? true;
 	}
 
-	public abstract async execute(message: Message, args: string[]): Promise<void | Message>;
+	public abstract execute(message: Message, args: string[]): Promise<void | Message>;
 }

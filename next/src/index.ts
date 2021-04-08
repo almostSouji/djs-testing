@@ -20,16 +20,22 @@ async function main() {
 	}
 
 	client.on('ready', () => {
-		console.log(`${client.user?.tag} (${client.user?.id}) ready.`);
 		const parts = __dirname.split(sep);
-		const name = `${parts[parts.length - 2]} (${version})`;
-		if (client.user?.username !== name) {
-			console.log(`setting name: ${name}`);
-			client.user?.setUsername(name);
+		const name = `${parts[parts.length - 1]} (${version})`;
+		if (process.env.LOCKED === 'TRUE') {
+			console.log('\x1B[32mready in locked mode (bot only reacts to owners)...\x1B[0m');
+		} else {
+			console.log('\x1b[31mready in open mode - COMMANDS MAY BE USED BY EVERYONE, UNLESS OWNER ONLY IS SPECIFIED...\x1B[0m');
 		}
+		console.log(`Client tag: \x1B[34m${client.user?.tag}\x1B[0m`);
+		console.log(`Client ID: \x1B[34m${client.user?.id}\x1B[0m`);
+		console.log(`Library version: \x1B[34m${name}\x1B[0m`);
+		console.log(`Prefix: \x1B[34m${process.env.PREFIX}\x1B[0m`);
 	});
 
 	client.on('message', async message => {
+		const owners = process.env.OWNER!.split(',');
+		if (process.env.LOCKED === 'TRUE' && !owners.includes(message.author.id)) return;
 		if (message.partial) await message.fetch();
 		if (!message.content.startsWith(process.env.PREFIX!) || message.author.bot) return;
 
@@ -39,10 +45,10 @@ async function main() {
 		client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 		if (!command) return;
-		if (command.ownerOnly && !process.env.OWNER!.split(',').includes(message.author.id)) return;
+		if (command.ownerOnly && !owners.includes(message.author.id)) return;
 
 		try {
-			command.execute(message, args);
+			await command.execute(message, args);
 		} catch (error) {
 			console.error(error);
 			message.reply('there was an error trying to execute that command!');
