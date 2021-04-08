@@ -30,7 +30,7 @@ client.on('ready', () => {
 	console.log(`Prefix: \x1B[34m${process.env.PREFIX}\x1B[0m`);
 });
 
-client.on('message', msg => {
+client.on('message', async msg => {
 	const owners = !process.env.OWNER.split(',');
 	if (process.env.LOCKED === 'TRUE' && !owners.includes(msg.author.id)) return;
 	if (!msg.content.startsWith(process.env.PREFIX) || msg.author.bot) return;
@@ -44,7 +44,7 @@ client.on('message', msg => {
 	if (command.ownerOnly && !owners.includes(msg.author.id)) return;
 
 	try {
-		command.execute(msg, args);
+		await command.execute(msg, args);
 	} catch (error) {
 		console.error(error);
 		msg.reply('there was an error trying to execute that command!');
