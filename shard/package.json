@@ -1,6 +1,6 @@
 {
 	"name": "boilerplate-shard",
-	"version": "1.0.0",
+	"version": "4.0.0",
 	"description": "discord.js boilerplate (shard)",
 	"main": "index.js",
 	"author": "Souji",

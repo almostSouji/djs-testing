@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate-stable",
-  "version": "1.0.0",
-  "description": "discord.js boilerplate (stable)",
+  "name": "boilerplate-v11",
+  "version": "4.0.0",
+  "description": "discord.js boilerplate (v11)",
   "main": "index.js",
   "author": "Souji",
   "license": "MIT",
