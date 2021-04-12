@@ -26,6 +26,7 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
+	if (msg.author.bot) return;
 	const owners = process.env.OWNER.split(',');
 	if (process.env.LOCKED === 'TRUE' && !owners.includes(msg.author.id)) return;
 	if (!msg.content.startsWith(process.env.PREFIX) || msg.author.bot) return;

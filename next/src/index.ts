@@ -34,6 +34,7 @@ async function main() {
 	});
 
 	client.on('message', async message => {
+		if (message.author.bot) return;
 		const owners = process.env.OWNER!.split(',');
 		if (process.env.LOCKED === 'TRUE' && !owners.includes(message.author.id)) return;
 		if (message.partial) await message.fetch();

@@ -71,6 +71,7 @@ client.on('ready', () => {
 });
 
 async function handleMessage(message) {
+	if (message.author.bot) return;
 	const owners = process.env.OWNER.split(',');
 	if (process.env.LOCKED === 'TRUE' && !owners.includes(message.author.id)) return;
 	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;

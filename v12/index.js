@@ -67,6 +67,7 @@ client.on('ready', () => {
 });
 
 async function handleMessage(message) {
+	if (message.author.bot) return;
 	const owners = process.env.OWNER.split(',');
 	if (process.env.LOCKED === 'TRUE' && !owners.includes(message.author.id)) return;
 	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
@@ -86,26 +87,6 @@ async function handleMessage(message) {
 		message.answer('there was an error trying to execute that command!');
 	}
 }
-
-client.on('message', async msg => {
-	const owners = process.env.OWNER.split(',');
-	if (process.env.LOCKED === 'TRUE' && !owners.includes(msg.author.id)) return;
-	if (!msg.content.startsWith(process.env.PREFIX) || msg.author.bot) return;
-
-	const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/);
-	const commandName = args.shift().toLowerCase();
-	const command = client.commands.get(commandName) ||
-		client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
-	if (!command) return;
-	if (command.ownerOnly && !owners.includes(msg.author.id)) return;
-	try {
-		await command.execute(msg, args);
-	} catch (error) {
-		console.error(error);
-		msg.reply('there was an error trying to execute that command!');
-	}
-});
 
 client.on('message', async msg => handleMessage(msg));
 client.on('messageUpdate', (_, n) => handleMessage(n));
