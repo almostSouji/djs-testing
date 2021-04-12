@@ -32,11 +32,11 @@ module.exports = {
 			response += ` • time taken: \`${(((hrStop[0] * 1e9) + hrStop[1])) / 1e6}ms\``;
 
 			if (response.length > 0) {
-				await msg.channel.send(response);
+				await msg.answer(response);
 			}
 		} catch (err) {
 			console.error('Eval error:', err);
-			return msg.channel.send(`Error:\`\`\`xl\n${clean(err, msg.client.token)}\n\`\`\``);
+			return msg.answer(`Error:\`\`\`xl\n${clean(err, msg.client.token)}\n\`\`\``);
 		}
 	}
 };

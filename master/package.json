@@ -17,8 +17,8 @@
 		"dotenv": "^6.0.0"
 	},
 	"devDependencies": {
-		"eslint": "^5.8.0",
-		"eslint-config-aqua": "^4.3.4"
+		"eslint": "^7.24.0",
+		"eslint-config-aqua": "^8.1.2"
 	},
 	"eslintConfig": {
 		"extends": "aqua/node"

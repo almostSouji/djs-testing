@@ -7,14 +7,14 @@ module.exports = {
 	aliases: ['up', 'upgrade', 'commit'],
 	ownerOnly: true,
 	async execute(msg) {
-		msg.channel.send('Updating...');
+		msg.answer('Updating...');
 		try {
-			const res = await exec('yarn upgrade');
+			const res = await exec('npm upgrade');
 			console.log(res);
-			msg.channel.send('Updated!');
+			msg.answer('Updated!');
 		} catch (err) {
 			console.error(err);
-			msg.channel.send('Something went wrong, check console');
+			msg.answer('Something went wrong, check console');
 		}
 	}
 };

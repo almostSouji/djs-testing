@@ -18,6 +18,6 @@ module.exports = {
 	},
 
 	execute(msg) {
-		return msg.channel.send(this.buildInfoEmbed(msg));
+		return msg.answer(this.buildInfoEmbed(msg));
 	}
 };

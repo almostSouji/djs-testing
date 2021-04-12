@@ -1,12 +1,52 @@
 require('dotenv').config();
 const { readdirSync } = require('fs');
 const { join, sep } = require('path');
-const { Client, Collection, Intents } = require('discord.js');
-const client = new Client({ intents: Intents.ALL });
+const { Structures, Client, Collection, Intents, MessageEmbed } = require('discord.js');
 const lock = require('./package-lock.json');
 const discordJS = lock.dependencies['discord.js'].version;
 const hashReg = /(?:tar.gz\/|#)(\w+)/;
 const djsHash = discordJS.match(hashReg)[1];
+
+Structures.extend('Message', Msg => {
+	class Message extends Msg {
+		constructor(client, data, channel) {
+			super(client, data, channel);
+			this.response = null;
+		}
+
+		async answer(content, options) {
+			if (!this.response?.deleted && this.response?.editable) {
+				if (content instanceof MessageEmbed) return this.response.edit('', content);
+				if (typeof content === 'string' && !options?.embed) return this.response.edit(content, { embed: null });
+				options = this.transformOptions(options);
+				return this.response.edit(content, this.transformOptions(options));
+			}
+			this.response = await this.channel.send(content, options);
+			return this.response;
+		}
+
+		transformOptions(options) {
+			const transform = {
+				embed: options?.embed ?? null
+			};
+			if (!options) return transform;
+			if (options instanceof Array) {
+				for (const addition of options) {
+					if (addition instanceof MessageEmbed) transform.embed = addition;
+				}
+			}
+			if (options instanceof MessageEmbed) transform.embed = options;
+			if (options instanceof MessageEmbed) transform.embed = options;
+			if (options.code) transform.code = options.code;
+			if (options.content) transform.content = options.content;
+			if (options.allowedMentions) transform.allowedMentions = options.allowedMentions;
+			return transform;
+		}
+	}
+	return Message;
+});
+
+const client = new Client({ intents: Intents.ALL });
 
 client.commands = new Collection();
 const commandFiles = readdirSync(join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
@@ -30,26 +70,29 @@ client.on('ready', () => {
 	console.log(`Prefix: \x1B[34m${process.env.PREFIX}\x1B[0m`);
 });
 
-client.on('message', async msg => {
+async function handleMessage(message) {
 	const owners = process.env.OWNER.split(',');
-	if (process.env.LOCKED === 'TRUE' && !owners.includes(msg.author.id)) return;
-	if (!msg.content.startsWith(process.env.PREFIX) || msg.author.bot) return;
+	if (process.env.LOCKED === 'TRUE' && !owners.includes(message.author.id)) return;
+	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
 
-	const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/);
+	const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
 	const command = client.commands.get(commandName) ||
 		client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
-	if (command.ownerOnly && !owners.includes(msg.author.id)) return;
+	if (command.ownerOnly && !owners.includes(message.author.id)) return;
 
 	try {
-		await command.execute(msg, args);
+		await command.execute(message, args);
 	} catch (error) {
 		console.error(error);
-		msg.reply('there was an error trying to execute that command!');
+		message.answer('there was an error trying to execute that command!');
 	}
-});
+}
+
+client.on('message', async msg => handleMessage(msg));
+client.on('messageUpdate', (_, n) => handleMessage(n));
 
 process.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);

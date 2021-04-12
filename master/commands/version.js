@@ -23,6 +23,6 @@ module.exports = {
 	execute(msg) {
 		const lock = require('../package-lock.json');
 		const discordJS = lock.dependencies['discord.js'].version;
-		return msg.channel.send(this.buildInfoEmbed(discordJS, msg));
+		return msg.answer(this.buildInfoEmbed(discordJS, msg));
 	}
 };
