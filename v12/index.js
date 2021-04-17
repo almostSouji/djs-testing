@@ -21,6 +21,13 @@ Structures.extend('Message', Msg => {
 			return this.response;
 		}
 
+		deleteAnswer() {
+			const { response } = this;
+			if (response && !response.deleted && response.deletable) {
+				response.delete();
+			}
+		}
+
 		transformOptions(options) {
 			const transform = {
 				embed: options?.embed ?? null
@@ -90,6 +97,7 @@ async function handleMessage(message) {
 
 client.on('message', async msg => handleMessage(msg));
 client.on('messageUpdate', (_, n) => handleMessage(n));
+client.on('messageDelete', msg => msg.deleteAnswer());
 
 process.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
