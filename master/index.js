@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { readdirSync } = require('fs');
 const { join, sep } = require('path');
-const { Structures, Client, Collection, Intents, MessageEmbed } = require('discord.js');
+const { Structures, Client, Collection, Intents, MessageEmbed, Permissions } = require('discord.js');
 const lock = require('./package-lock.json');
 const discordJS = lock.dependencies['discord.js'].version;
 const hashReg = /(?:tar.gz\/|#)(\w+)/;
@@ -15,6 +15,7 @@ Structures.extend('Message', Msg => {
 		}
 
 		async answer(content, options) {
+			if (!this.channel.permissionsFor(this.client.user).has([Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.VIEW_CHANNEL])) return;
 			if (!this.response?.deleted && this.response?.editable) {
 				if (content instanceof MessageEmbed) return this.response.edit('', content);
 				if (typeof content === 'string' && !options?.embed) return this.response.edit(content, { embed: null });
@@ -65,7 +66,7 @@ for (const file of commandFiles) {
 
 client.on('ready', () => {
 	const parts = __dirname.split(sep);
-	const name = `${parts[parts.length - 1]} (${djsHash.slice(0, 6)})`;
+	const name = '\x1b[33mLOCAL LINK\x1B[0m'; // `\x1B[34m${parts[parts.length - 1]} (${djsHash.slice(0, 6)})\x1B[0m`;
 	if (process.env.LOCKED === 'TRUE') {
 		console.log('\x1B[32mready in locked mode (bot only reacts to owners)...\x1B[0m');
 	} else {
@@ -73,7 +74,7 @@ client.on('ready', () => {
 	}
 	console.log(`Client tag: \x1B[34m${client.user.tag}\x1B[0m`);
 	console.log(`Client ID: \x1B[34m${client.user.id}\x1B[0m`);
-	console.log(`Library version: \x1B[34m${name}\x1B[0m`);
+	console.log(`Library version: ${name}`);
 	console.log(`Prefix: \x1B[34m${process.env.PREFIX}\x1B[0m`);
 });
 

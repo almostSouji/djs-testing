@@ -11,6 +11,7 @@ Structures.extend('Message', Msg => {
 		}
 
 		async answer(content, options) {
+			if (!this.channel.permissionsFor(this.client.user).has(['VIEW_CHANNEL', 'SEND_MESSAGES'])) return;
 			if (!this.response?.deleted && this.response?.editable) {
 				if (content instanceof MessageEmbed) return this.response.edit('', content);
 				if (typeof content === 'string' && !options?.embed) return this.response.edit(content, { embed: null });
