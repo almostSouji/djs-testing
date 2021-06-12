@@ -26,13 +26,18 @@ module.exports = {
 
 			let response = '';
 
-			response += `\`\`\`js\n${clean(inspect(evaled, { depth: 0 }), msg.client.token)}\n\`\`\``;
-			response += `• d.js ${Discord.version}`;
-			response += ` • Type: \`${typeof evaled}\``;
-			response += ` • time taken: \`${(((hrStop[0] * 1e9) + hrStop[1])) / 1e6}ms\``;
+			const cleaned = clean(inspect(evaled, { depth: 0 }), msg.client.token);
+			if (cleaned.length < 1500) {
+				response += `\`\`\`js\n${cleaned}\n\`\`\``;
+				response += `• d.js ${Discord.version}`;
+				response += ` • Type: \`${typeof evaled}\``;
+				response += ` • time taken: \`${(((hrStop[0] * 1e9) + hrStop[1])) / 1e6}ms\``;
 
-			if (response.length > 0) {
-				await msg.answer(response);
+				if (response.length > 0) {
+					return msg.answer(response);
+				}
+			} else {
+				return msg.channel.send({ files: [{ attachment: Buffer.from(cleaned), name: 'eval.js' }] });
 			}
 		} catch (err) {
 			console.error('Eval error:', err);

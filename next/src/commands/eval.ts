@@ -31,13 +31,18 @@ export default class PingCommand extends Command {
 
 			let response = '';
 
-			response += `\`\`\`js\n${this.clean(inspect(evaled, { depth: 0 }), message.client.token!)}\n\`\`\``;
-			response += `• d.js ${version}`;
-			response += ` • Type: \`${typeof evaled}\``;
-			response += ` • time taken: \`${(((hrStop[0] * 1e9) + hrStop[1])) / 1e6}ms\``;
+			const cleaned = this.clean(inspect(evaled, { depth: 0 }), message.client.token!);
+			if (cleaned.length < 1500) {
+				response += `\`\`\`js\n${cleaned}\n\`\`\``;
+				response += `• d.js ${version}`;
+				response += ` • Type: \`${typeof evaled}\``;
+				response += ` • time taken: \`${(((hrStop[0] * 1e9) + hrStop[1])) / 1e6}ms\``;
 
-			if (response.length > 0) {
-				return message.channel.send(response);
+				if (response.length > 0) {
+					return message.channel.send(cleaned);
+				}
+			} else {
+				return message.channel.send({ files: [{ attachment: Buffer.from(cleaned), name: 'eval.js' }] });
 			}
 		} catch (err) {
 			console.error('Eval error:', err);
