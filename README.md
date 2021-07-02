@@ -1,9 +1,7 @@
 # Getting started
 Suite of testing bots for several discord.js versions and applications. Each sub-project should be run on its own token.
 
-The shard project will set an activity and status to reflect the shard in its presence.
-
-Each application needs a file called `.env` in its root directory containing:
+Each application requires a file called `.env` in its root directory containing:
 
 ```
 TOKEN=71pjmILeAvX0CmSRnKBDnOCh50llqGe4Q0tmwBiDwcoi2iO9b30i70iug3f
@@ -14,6 +12,12 @@ LOCKED=TRUE // remove line if open command usage is desired
 
 If multiple owners are desired they can be separated with a comma:
 `OWNER=83886770768314368,175179625880616960`
+
+From version 13 on there is an additional key for a dev guild, under which slash commands will be deployed:
+
+```
+DEV_GUILD=345341901051920395
+```
 
 Each bot has an eval command locked to owners which executes arbitrary code! Giving eval access to __anyone__ is generally a bad idea.
 
@@ -42,5 +46,5 @@ If you made changes to the source you want to apply to the container pass the `-
 
 ```
 docker-compose up --build
-docker-compose up --build v11 v12
+docker-compose up --build dev v12
 ```

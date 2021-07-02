@@ -1,13 +1,5 @@
 version: '3'
 services:
-    v11:
-        image: djs-v11
-        build:
-          context: ./v11
-          dockerfile: Dockerfile
-        restart: unless-stopped
-        env_file:
-          - ./v11/.env
     v12:
         image: djs-v12
         build:
@@ -16,14 +8,6 @@ services:
         restart: unless-stopped
         env_file:
           - ./v12/.env
-    shard:
-        image: djs-shard
-        build:
-          context: ./shard
-          dockerfile: Dockerfile
-        restart: unless-stopped
-        env_file:
-          - ./shard/.env
     master:
         image: djs-master
         build:
@@ -32,11 +16,11 @@ services:
         restart: unless-stopped
         env_file:
           - ./master/.env
-    next:
-        image: djs-next
+    dev:
+        image: dev
         build:
-          context: ./next
+          context: ./dev
           dockerfile: Dockerfile
         restart: unless-stopped
         env_file:
-          - ./next/.env
+          - ./dev/.env
