@@ -1,5 +1,4 @@
-import { Snowflake } from 'discord.js';
-import { Client, Intents } from 'discord.js';
+import { Client, Intents, Snowflake } from 'discord.js';
 import { config } from 'dotenv';
 import { resolve } from 'path';
 
@@ -17,15 +16,14 @@ client.on('ready', async () => {
 		client.destroy();
 		console.log('\x1b[31mClient destroyed.\x1B[0m');
 		process.exit(0);
-		return;
 	}
 
 	const data = [
 		{
-			name: "ping",
-			description: "Replies with pong"
+			name: 'ping',
+			description: 'Replies with pong'
 		}
-	]
+	];
 
 	await g.commands.set(data);
 
@@ -34,6 +32,6 @@ client.on('ready', async () => {
 	client.destroy();
 	console.log('\x1B[32mClient destroyed.\x1B[0m');
 	process.exit(0);
-})
+});
 
-client.login(process.env.TOKEN!);
+client.login(process.env.TOKEN);

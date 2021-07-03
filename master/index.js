@@ -1,11 +1,7 @@
 require('dotenv').config();
 const { readdirSync } = require('fs');
-const { join, sep } = require('path');
-const { Structures, Client, Collection, Intents, MessageEmbed, Permissions } = require('discord.js');
-const lock = require('./package-lock.json');
-const discordJS = lock.dependencies['discord.js'].version;
-const hashReg = /(?:tar.gz\/|#)(\w+)/;
-const djsHash = discordJS.match(hashReg)[1];
+const { join } = require('path');
+const { Structures, Client, Collection, Intents, MessageEmbed, Permissions, version } = require('discord.js');
 
 Structures.extend('Message', Msg => {
 	class Message extends Msg {
@@ -65,8 +61,6 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', () => {
-	const parts = __dirname.split(sep);
-	const name = '\x1b[33mLOCAL LINK\x1B[0m'; // `\x1B[34m${parts[parts.length - 1]} (${djsHash.slice(0, 6)})\x1B[0m`;
 	if (process.env.LOCKED === 'TRUE') {
 		console.log('\x1B[32mready in locked mode (bot only reacts to owners)...\x1B[0m');
 	} else {
@@ -74,7 +68,7 @@ client.on('ready', () => {
 	}
 	console.log(`Client tag: \x1B[34m${client.user.tag}\x1B[0m`);
 	console.log(`Client ID: \x1B[34m${client.user.id}\x1B[0m`);
-	console.log(`Library version: ${name}`);
+	console.log(`Library version: \x1B[34m${version})\x1B[0m`);
 	console.log(`Prefix: \x1B[34m${process.env.PREFIX}\x1B[0m`);
 });
 
@@ -113,6 +107,6 @@ client.on('error', error => {
 });
 
 client.on('warn', console.log);
-client.on('debug', console.log);
+// client.on('debug', console.log);
 
 client.login(process.env.TOKEN);

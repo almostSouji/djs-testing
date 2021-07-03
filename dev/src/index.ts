@@ -1,9 +1,8 @@
 import { config } from 'dotenv';
-import { resolve, join, sep } from 'path';
-import { Client, Collection, version, Intents, MessageActionRow, Snowflake } from 'discord.js';
+import { resolve, join } from 'path';
+import { Client, Collection, version, Intents, Interaction } from 'discord.js';
 import { readdirSync } from 'fs';
 import { Command } from './structures/command';
-import { Interaction } from 'discord.js';
 
 config({ path: resolve(__dirname, '../.env') });
 
@@ -11,17 +10,17 @@ function reject(interaction: Interaction) {
 	if (interaction.isButton() || interaction.isCommand() || interaction.isSelectMenu() || interaction.isMessageComponent()) {
 		interaction.reply({
 			content: `\`🐞\` No handler found for ${interaction.id} ${interaction.type}`,
-			ephemeral: true,
-		})
+			ephemeral: true
+		});
 	} else {
-		console.log(`\x1b[31mNo handler found for ${interaction.id} ${interaction.type}\x1B[0m`)
+		console.log(`\x1b[31mNo handler found for ${interaction.id} ${interaction.type}\x1B[0m`);
 	}
 }
 
 async function main() {
 	const client = new Client({ intents: Intents.NON_PRIVILEGED });
 	client.commands = new Collection<string, Command>();
-	const commandFiles = readdirSync(join(__dirname, 'commands')).filter(c => c.endsWith('.js'))
+	const commandFiles = readdirSync(join(__dirname, 'commands')).filter(c => c.endsWith('.js'));
 
 	for (const file of commandFiles) {
 		const mod = await import(join(__dirname, 'commands', file));
@@ -73,13 +72,13 @@ async function main() {
 			if (interaction.commandName === 'ping') {
 				interaction.reply({
 					content: 'pong!',
-					ephemeral: true,
-				})
+					ephemeral: true
+				});
 			}
 		}
 
 		reject(interaction);
-	})
+	});
 
 	process.on('unhandledRejection', async source => {
 		if (source instanceof Error) {
